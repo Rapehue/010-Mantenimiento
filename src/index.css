@@ -1,0 +1,52 @@
+body {
+  background-color: #e9ecef;
+  max-width: '95%';
+}
+
+.box-shadow {
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+.container { 
+  min-height: 95vh; 
+  min-width: 100vh;
+  font-family: 'Times New Roman', Times, serif;
+ }
+
+.estado_nuevo {
+  background-color: whitesmoke;
+  opacity: 0.7;
+  border-color: black;
+ }
+
+.estado_asignado {
+  background-color: lightblue;
+  opacity: 0.7;
+  border-color: black;
+ }
+
+.estado_desarrollando {
+  background-color: lightgreen;
+  opacity: 0.7;
+  border-color: black;
+ }
+
+.estado_paralizado {
+  background-color: black;
+  opacity: 0.7;
+  color: white;
+  border-color: red;
+ }
+
+.estado_finalizado {
+  background-color: green;
+  color: white;
+  opacity: 0.7;
+  border-color: black;
+ }
+
+.estado_reabierto {
+  background-color: lightsalmon;
+  opacity: 0.7;
+  border-color: whitesmoke;
+ }

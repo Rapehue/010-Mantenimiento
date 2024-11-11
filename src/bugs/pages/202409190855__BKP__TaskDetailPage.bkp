@@ -1,0 +1,218 @@
+import { useEffect, useMemo, useState } from "react";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { getTaskById } from '../helpers/getTaskById';
+import axiosInstance from 'axios';
+
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { getDeliveryByTaskId } from '../helpers/getDeliveryByTaskId';
+import { DeliveryCard } from '../components/DeliveryCard';
+import { IconButton } from '@mui/material';
+import { AddOutlined } from "@mui/icons-material"
+import Divider from '@mui/material/Divider';
+
+
+
+
+
+export const TaskDetailPage = () => {
+
+    const { id } = useParams();
+    const navigate = useNavigate();
+
+    const [task, setTask] = useState([]);
+
+
+    useEffect (() => {
+      onLoadPage();
+      }, [ ]);
+
+      const onLoadPage = async () => {
+        let datos;
+        await axiosInstance.get(`http://localhost:3001/obtenertareas/${id}`).then((response) => {
+          datos = response.data;
+          setTask (datos);
+        });
+      }
+      
+      const { codigo_tarea
+        , descripcion_tarea
+        , descripcion_ampliada_tarea
+        , photoUrl_responsable_tarea
+        , nombre_completo_responsable_tarea
+        , nombre_completo_solicitante_tarea
+        , codigo_responsable_tarea
+        , fecha_inicio_estimada_tarea
+        , fecha_fin_estimada_tarea
+        , esfuerzo_estimado_tarea
+        , fecha_inicio_real_tarea
+        , fecha_fin_real_tarea
+        , esfuerzo_real_tarea
+        , modulo_egipto_tarea
+        , descripcion_estado
+        , descripcion_proyecto
+        , departamento_solicitante_tarea } = task [0];
+  
+    const delivery = useMemo( () => getDeliveryByTaskId( id ), [id]);
+
+    const onNavigateBack = () => {
+        navigate(-1);  
+    }
+
+    if ( !delivery ) {
+      console.log('No se ha encontrado ningún entregable');
+    }
+
+  return (
+  
+
+  
+<div
+  style={{ maxWidth: '95%' }}
+>
+
+  <div
+    className="card-per-task"
+  >
+
+    <Row 
+      style={{ 
+        padding: '10px',
+        alignItems: 'center',
+        textAlign: 'center',
+        fontSize: '22px', 
+      }}
+    >
+      <Col className='col-3'>
+        <img 
+          src={ `${ photoUrl_responsable_tarea }`}
+          alt= { codigo_responsable_tarea }  
+          title= { nombre_completo_responsable_tarea }  
+          style={{ borderRadius: '40px', marginRight: '10px', marginLeft: '10px', width: '80px', height: '80px' }}
+        />
+      </Col>
+
+      <Col className='col-6'>
+        { descripcion_tarea }
+      </Col>
+      
+      <Col  className='col-3'>
+        { codigo_tarea }
+      </Col>
+    </Row>
+
+    <Divider
+      style={{ padding: '5px',
+        marginBottom: '10px'
+       }} 
+      variant="middle" 
+    />
+
+    <div 
+      className='col-12'
+      style={{ padding: '5px' }} 
+    >
+      <h6>Descripción detallada</h6>
+      <p className="text-muted" style={{ fontSize: '16px', padding: '10px' }}>{ descripcion_ampliada_tarea }</p>
+      <h6>Información General</h6>
+      
+      <div className='row' style={{ fontSize: '14px', padding: '10px' }}>
+        <Col><b>Proyecto: </b>{descripcion_proyecto}</Col>
+        <Col><b>Solicitante: </b>{nombre_completo_solicitante_tarea}</Col>
+        <Col><b>Departamento: </b>{departamento_solicitante_tarea}</Col>
+      </div>
+
+      <div className='row' style={{ fontSize: '14px', padding: '10px' }}>
+        <Col><b>Estado: </b>{descripcion_estado}</Col>
+        <Col><b>Prioridad: </b>{}</Col>
+        <Col><b>Modulo Egipto: </b>{modulo_egipto_tarea}</Col>
+      </div>
+
+      <div className='row' style={{ fontSize: '14px', padding: '10px' }}>
+        <Col><b>Fec. Inicio Est.: </b>{fecha_inicio_estimada_tarea}</Col>
+        <Col><b>Fec. Fin Est.: </b>{fecha_fin_estimada_tarea}</Col>
+        <Col><b>Estimación Inicial: </b> {esfuerzo_estimado_tarea}</Col>
+      </div>
+
+      <div className='row' style={{ fontSize: '14px', padding: '10px' }}>
+        <Col><b>Fec. Inicio Real: </b>{fecha_inicio_real_tarea}</Col>
+        <Col><b>Fec. Fin Real.: </b>{fecha_fin_real_tarea}</Col>
+        <Col><b>Horas Imputadas: </b> {esfuerzo_real_tarea}</Col>
+      </div>
+
+      <div className='row' style={{ fontSize: '14px', padding: '10px' }}>
+        <div className='col-4' style={{ padding: '10px', textAlign: 'center' }}>
+          <button 
+            className="btn btn-outline-success"
+            style={{ textAlign: 'center' }}
+            onClick={ console.log ( 'Me voy a asignar la tarea' ) }
+          >
+            Asignarme
+          </button>
+
+        </div>
+
+        <div className='col-4' style={{ padding: '10px', textAlign: 'center' }}>
+          <button 
+            className="btn btn-outline-secondary"
+            style={{ textAlign: 'center' }}
+            onClick={ console.log ( 'Voy a actualizar la información' )}
+          >
+            Actualizar Info
+          </button>
+
+        </div>
+        
+        <div className='col-4' style={{ padding: '10px', textAlign: 'center' }}>
+          <button 
+            className="btn btn-outline-info"
+            style={{ textAlign: 'center' }}
+            onClick={ onNavigateBack }
+          >
+            Cancelar
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <Divider
+    style={{ padding: '5px',
+      marginBottom: '10px',
+      maxWidth: '95%'
+    }} 
+    variant="middle"
+  >
+    ENTREGABLES
+  </Divider>
+
+  <div className="row row-cols-1 row-cols-md-1 g-3">
+      {
+      delivery.map( item => (
+          <DeliveryCard 
+              key={ item.id_entregable }
+              { ...item }
+          />
+      ))
+      }
+  </div>
+
+  <IconButton
+        // disabled={ isSaving }
+        onClick={() => navigate(`/task/create_delivery`)}
+        size='large'
+        sx={{
+          color: 'white',
+          backgroundColor: 'error.main',
+          ':hover': { backgroundColor: 'error.main', opacity: 0.9 },
+          position: 'fixed',
+          right: 50,
+          bottom: 50
+        }}>
+          <AddOutlined sx={{ fontSize: 30 }}/>
+  </IconButton>
+</div>    
+
+  )
+}
