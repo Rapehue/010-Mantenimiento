@@ -1,3 +1,11 @@
+a {
+    color: #000000;
+    margin-bottom: 5px;
+  }
+  a:hover {
+     color: #00F
+  }
+
 divider {
     max-width: 95%;
 }

@@ -4,6 +4,7 @@ import { setActiveTask } from "../../store/slices/mantenimientoSlice";
 import { useDispatch } from "react-redux";
 import axiosInstance from 'axios';
 import { restaFechasDias } from "../helpers";
+import { ConditionalLink } from "./ConditionalLink";
 
 export const MiniDeliveryCard = ( delivery ) => {
 
@@ -13,6 +14,7 @@ export const MiniDeliveryCard = ( delivery ) => {
         , photoUrl_responsable //photoUrl_responsable_entregable
         , codigo_responsable //codigo_responsable_entregable
         , nombre_completo_responsable //nombre_completo_responsable_entregable 
+        , objeto
     } = delivery;
   
     const dispatch = useDispatch();
@@ -66,14 +68,20 @@ export const MiniDeliveryCard = ( delivery ) => {
                             </div>
                         </div>
                         {/* <br/> */}
-                        <Link
+                        {/* <Link
                         sx={{ textAlign: 'justify'}}
                         onClick={ onHandleAmpliar } 
                         // Controlar si se trata de una tarea o de un entregable
                         to={ `/delivery/${id}` }
                         >
                             Mas Información
-                        </Link>
+                        </Link> */}
+                        <ConditionalLink sx={{ textAlign: 'justify' }} onClick={ onHandleAmpliar } to={ `/delivery/${id}` } condition={ objeto === 'entregable'}>
+                            Mas Información...
+                        </ConditionalLink>
+                        <ConditionalLink sx={{ textAlign: 'justify' }} onClick={ onHandleAmpliar } to={ `/task/${id}` } condition={ objeto === 'tarea'}>
+                            Mas Información...
+                        </ConditionalLink>
                     </div>
                 </div>
             </div>

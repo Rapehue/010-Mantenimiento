@@ -31,6 +31,17 @@ export const AllDeliveryPage = () => {
     
     };
 
+    const remapValues = ( inputArray ) => {
+        return inputArray.map( item => {return { id: item.id_entregable
+            , fecha_alta: item.fecha_alta
+            , descripcion: item.descripcion_entregable
+            , photoUrl_responsable: item.photoUrl_responsable_entregable
+            , codigo_responsable: item.codigo_responsable_entregable
+            , nombre_completo_responsable: item.nombre_completo_responsable_entregable
+            , objeto: 'entregable'
+        }})
+    };
+
     useEffect(() => {
 
         resetCalcValues ();
@@ -95,22 +106,21 @@ export const AllDeliveryPage = () => {
         {
             isLoading_delivery
                 ? <div>...Cargando</div>
-                // : <AccordionSample backColor = {'BurlyWood'} title = {'Nuevos'} id={1} data = {data_delivery.filter((item) => item.descripcion_estado === 'Nuevo')}
                 : 
                 <>
-                <AccordionSample backColor = {'AliceBlue'} title = {'Nuevos'} id={1} data = {(dataFilter.filter((item) => item.descripcion_estado === 'Nuevo')).map( item => {return { id: item.id_entregable , ...item }})}/>
+                <AccordionSample backColor = {'AliceBlue'} title = {'Nuevos'} id={1} data = {remapValues((dataFilter.filter((item) => item.descripcion_estado === 'Nuevo')))}/>
                 
-                <AccordionSample backColor = {'BlanchedAlmond'} title = {'Asignados'} id={2} data = {(dataFilter.filter((item) => item.descripcion_estado === 'Asignado')).map( item => {return { id: item.id_entregable , ...item }})}/>
+                <AccordionSample backColor = {'BlanchedAlmond'} title = {'Asignados'} id={2} data = {remapValues((dataFilter.filter((item) => item.descripcion_estado === 'Asignado')))}/>
 
-                <AccordionSample backColor = {'BurlyWood'} title = {'Desarrollando'} id={3} data = {(dataFilter.filter((item) => item.descripcion_estado === 'Desarrollando')).map( item => {return { id: item.id_entregable , ...item }})}/>
+                <AccordionSample backColor = {'BurlyWood'} title = {'Desarrollando'} id={3} data = {remapValues((dataFilter.filter((item) => item.descripcion_estado === 'Desarrollando')))}/>
 
-                <AccordionSample backColor = {'Gold'} title = {'Realizado'} id={4} data = {(dataFilter.filter((item) => item.descripcion_estado === 'Realizado')).map( item => {return { id: item.id_entregable , ...item }})}/>
+                <AccordionSample backColor = {'Gold'} title = {'Realizado'} id={4} data = {remapValues((dataFilter.filter((item) => item.descripcion_estado === 'Realizado')))}/>
 
-                <AccordionSample backColor = {'LightGreen'} title = {'Entregado'} id={5} data = {(dataFilter.filter((item) => item.descripcion_estado === 'Entregado')).map( item => {return { id: item.id_entregable , ...item }})}/>
+                <AccordionSample backColor = {'LightGreen'} title = {'Entregado'} id={5} data = {remapValues((dataFilter.filter((item) => item.descripcion_estado === 'Entregado')))}/>
 
-                <AccordionSample backColor = {'SeaGreen'} title = {'Finalizado'} id={6} data = {(dataFilter.filter((item) => item.descripcion_estado === 'Finalizado')).map( item => {return { id: item.id_entregable , ...item }})}/>
+                <AccordionSample backColor = {'SeaGreen'} title = {'Finalizado'} id={6} data = {remapValues((dataFilter.filter((item) => item.descripcion_estado === 'Finalizado')))}/>
 
-                <AccordionSample backColor = {'OrangeRed'} title = {'Reabierto'} id={7} data = {(dataFilter.filter((item) => item.descripcion_estado === 'Reabierto')).map( item => {return { id: item.id_entregable , ...item }})}/>
+                <AccordionSample backColor = {'OrangeRed'} title = {'Reabierto'} id={7} data = {remapValues((dataFilter.filter((item) => item.descripcion_estado === 'Reabierto')))}/>
                 </>
         }
     </>

@@ -17,9 +17,9 @@ export const Mantenimiento = () => {
 
   return (
     <Routes>
-        {/* <Route path="/*" element={ <AllTaskPage />}/> */}
+        <Route path="/*" element={ <AllTaskPage />}/>
         {/* <Route path="/*" element={ <AllDeliveryPage />}/> */}
-        <Route path="/*" element={ <TaskPage />}/>
+        {/* <Route path="/*" element={ <TaskPage />}/> */}
         <Route path="task/create_task" element={<FormTask />}/>
         <Route path="task/create_delivery" element={<FormDelivery />}/>
         <Route path="task/:id/delivery/create_imputacion" element={<FormImputacion />}/>
