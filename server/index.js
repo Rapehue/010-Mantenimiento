@@ -302,6 +302,25 @@ app.get("/obtenerusuarios/:id",(req, res)=>{
     );
 });
 
+app.get("/obtenerusuariosuid/:id",(req, res)=>{
+    const id = req.params.id;
+
+    db.query(`SELECT identificador_externo uid
+        , nombre_completo displayName
+        , photourl photoURL
+        , id
+        FROM usuario_activo_view
+        WHERE identificador_externo = '${id}'`,
+    (err,result)=>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    }
+    );
+});
+
 app.get("/obtenerproyectos",(req, res)=>{
     const id = req.params.id;
 
@@ -453,7 +472,7 @@ app.get("/obtenertareahisact",(req, res)=>{
         , tar.id_solicitante_tarea
         , tar.id_proyecto_tarea
         FROM tarea_view_des tar
-            inner join tarea_his his on tar.id_tarea = his.id_tarea and his.marca_activo = 'S'
+            left join tarea_his his on tar.id_tarea = his.id_tarea and his.marca_activo = 'S'
         WHERE tar.fecha_fin_real_tarea is null or to_days(cast(now() as date)) - to_days(tar.fecha_fin_real_tarea) <= 35`,
     (err,result)=>{
         if(err){
@@ -479,6 +498,107 @@ app.get("/obtenerentregables",(req, res)=>{
     }
     );
 });
+
+app.get("/obtenermes",(req, res)=>{
+    const id = req.params.id;
+
+    db.query(`Select CONCAT (cal.year, LPAD(CAST(cal.month_of_year as CHAR(2)), 2, '0')) id
+	, CONCAT (cal.year, ' - ', cal.month_name) textual
+    , LPAD(CAST(cal.month_of_year as CHAR(2)), 2, '0') mes_mm
+    , sum (imp.horas) horas
+    From imputacion imp
+        inner join calendario cal on imp.fecha_imputacion = cal.date_yyyymmdd
+    Where imp.horas > 0
+    group by 1, 2, 3
+    order by 1, 2, 3 desc;`,
+    (err,result)=>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    }
+    );
+});
+
+app.get("/obtenerimputacionmesmodulo",(req, res)=>{
+    const id = req.params.id;
+
+    db.query(`Select ent.modulo_egipto modulo
+    , ent.tarea_egipto egipto
+    , CONCAT (cal.year, LPAD(CAST(cal.month_of_year as CHAR(2)), 2, '0')) mes_mm
+    , sum (imp.horas) horas
+    From imputacion imp
+        inner join calendario cal on imp.fecha_imputacion = cal.date_yyyymmdd
+        inner join entregable ent on ent.id = imp.id_entregable
+    /*Where cal.year = year(curdate())*/
+    group by 1, 2, 3
+    order by 1, 2, 3 desc`,
+    (err,result)=>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    }
+    );
+});
+
+app.get("/obtenerimputacionmesfecha",(req, res)=>{
+    const id = req.params.id;
+
+    db.query(`Select cal.date_ddmmyyyy fecha_ddmmyyyy
+    , ent.modulo_egipto modulo
+    , CONCAT (cal.year, LPAD(CAST(cal.month_of_year as CHAR(2)), 2, '0')) mes_mm
+    , sum (imp.horas) horas
+    From imputacion imp
+        inner join calendario cal on imp.fecha_imputacion = cal.date_yyyymmdd
+        inner join entregable ent on ent.id = imp.id_entregable
+    /*Where cal.year = year(curdate())*/
+    group by 1, 2, 3
+    order by 1, 2, 3 desc`,
+    (err,result)=>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    }
+    );
+});
+
+app.get("/obtenerimputacionmesdetalle",(req, res)=>{
+    const id = req.params.id;
+
+    db.query(`Select imp.fecha_imputacion fecha_yyyymmdd
+        , ent.modulo_egipto modulo
+        , ent.tarea_egipto egipto
+        , pry.descripcion descripcion_proyecto
+        , tar.descripcion descripcion_tarea
+        , ent.codigo codigo_entregable
+        , ent.descripcion descripcion_entregable
+        , est.descripcion descripcion_estado
+        , cal.date_ddmmyyyy fecha_ddmmyyyy
+        , LPAD(CAST(cal.month_of_year as CHAR(2)), 2, '0') mes_mm
+        , sum (imp.horas) horas
+        From imputacion imp
+            inner join calendario cal on imp.fecha_imputacion = cal.date_yyyymmdd
+            inner join entregable ent on ent.id = imp.id_entregable
+            inner join tarea tar on ent.id_tarea = tar.id
+            inner join proyecto pry on pry.id = ent.id_proyecto
+            inner join estado est on ent.id_estado = est.id
+        Where cal.year = year(curdate())
+        group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10`,
+    (err,result)=>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    }
+    );
+});
+
 //********************** SENTENCIAS INSERT **********************//
 
 app.post('/creartarea', (req, res) => {
