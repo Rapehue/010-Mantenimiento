@@ -13,6 +13,7 @@ export const mantenimientoSlice = createSlice({
     activeTask: '',
     activeDelivery: '',
     value: 0,
+    pantalla: 'Tareas',
     textButton: '',
   },
   reducers: {
@@ -41,10 +42,13 @@ export const mantenimientoSlice = createSlice({
     setTextButton: (state, { payload }) => {
       state.textButton = payload;
     },
+    setPantalla: (state, { payload }) => {
+      state.pantalla = payload;
+    },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount, setActiveTask, setActiveDelivery, setValue, setTextButton } = mantenimientoSlice.actions
+export const { increment, decrement, incrementByAmount, setActiveTask, setActiveDelivery, setValue, setTextButton, setPantalla } = mantenimientoSlice.actions
 
 // export default mantenimientoSlice.reducer

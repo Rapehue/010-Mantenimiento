@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setActiveDelivery } from "../../store/slices/mantenimientoSlice";
-import { updateEntregable } from "../helpers/updateTablas";
 import { useFetch } from "../../hooks";
 
 export const UserCard = ( user ) => {

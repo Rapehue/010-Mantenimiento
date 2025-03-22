@@ -3,7 +3,7 @@ import { useState } from "react";
 
 
 
-export const CabeceraFiltro = ({ data, field, fieldValue, setFieldValue }) => {
+export const CabeceraFiltro = ({ data, field, defaultValue, fieldValue, setFieldValue }) => {
 
     const onInputChange = ( event ) => {
         setFieldValue ( event.target.value );
@@ -25,6 +25,7 @@ export const CabeceraFiltro = ({ data, field, fieldValue, setFieldValue }) => {
                 select
                 label="Seleccionar una opción *"
                 value={ fieldValue }
+                defaultValue={ defaultValue }
                 fullWidth
                 name = { field }
                 onChange={ (e) => onInputChange (e) }

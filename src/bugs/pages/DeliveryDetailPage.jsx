@@ -12,6 +12,7 @@ import { calculaUpdateTarea, resetValores, updateEntregable, updateInsertEntrega
 import { setActiveDelivery, setTextButton } from "../../store/slices/mantenimientoSlice";
 import { formateaFechaHoraLeeMySql } from "../helpers/generaFechaHora";
 import { MyVerticallyCenteredModal } from "../components/MyVerticallyCenteredModal";
+import { PopUpModal } from "../components/PopUpModal";
 
 export const DeliveryDetailPage = ( ) => {
 
@@ -23,6 +24,7 @@ export const DeliveryDetailPage = ( ) => {
     const [isLoadingDelivery, setIsLoadingDelivery] = useState(true);
     const [isLoadingNote, setIsLoadingNote] = useState(true);
     const [modalShow, setModalShow] = useState(false);
+    const [modalUpdShow, setModalUpdShow] = useState(false);
 
     const [updEntregable, setUpdEntregable] = useState(false);
     const [updTarea, setUpdTarea] = useState(false);
@@ -71,6 +73,21 @@ export const DeliveryDetailPage = ( ) => {
 
     };
 
+    const onHandleClickModificar = (event) => {
+
+      event.preventDefault();
+      navigate(`/delivery/update_entregable`);
+
+    };
+
+    const onHandleClickImputar = ( event ) => {
+
+      event.preventDefault();
+      dispatch (setActiveDelivery( delivery));
+      navigate(`/task/${delivery[0].id_tarea_entregable}/delivery/create_imputacion`);
+
+    };
+
     const { data: data_state, hasError: hasError_state, isLoading: isLoading_state } = useFetch( `http://localhost:3001/obtenerestados` );
     
   return (
@@ -78,6 +95,10 @@ export const DeliveryDetailPage = ( ) => {
     <MyVerticallyCenteredModal
         show={modalShow}
         onHide={() => setModalShow(false)}
+    />
+    <PopUpModal
+      show={modalUpdShow}
+      onHide={() => setModalUpdShow(false)}
     />
     {
       isLoadingDelivery || isLoadingNote
@@ -202,9 +223,19 @@ export const DeliveryDetailPage = ( ) => {
         <button 
           className="btn btn-outline-dark"
           style={{ textAlign: 'center', margin: '10px', }}
-        //   onClick={ }
+          onClick={ (e) => onHandleClickModificar(e) }
+          // disabled={ true }
         >
-          Paralizar
+          Modificar
+        </button>
+
+        <button 
+          className="btn btn-outline-warning"
+          style={{ textAlign: 'center', margin: '10px', }}
+          onClick={ (e) => onHandleClickImputar(e) }
+          // disabled={ true }
+        >
+          Imputar
         </button>
 
     </div>

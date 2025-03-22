@@ -84,6 +84,7 @@ export const AllDeliveryPage = () => {
 
     return (
     <>
+        <h5 className = 'cabecera-tittle'> Entregables por estado </h5>
         <div className="row filter">
         {
             isLoading_usuario 

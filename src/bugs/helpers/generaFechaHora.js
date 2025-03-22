@@ -76,6 +76,7 @@ export const ObtenerFechaHoraActual = () => {
 
     const tiempoTranscurrido = Date.now();
     var fechaactual = new Date( tiempoTranscurrido );
+    console.log (tiempoTranscurrido);
 
     return fechaactual.toISOString();
 }

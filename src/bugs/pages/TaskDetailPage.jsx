@@ -102,6 +102,15 @@ export const TaskDetailPage = () => {
 
     const updateTareaEstado = async () => {
 
+          var nuevoFechaInicioTarea = null;
+
+          if (task[0].fecha_inicio_real_tarea === null)
+            nuevoFechaInicioTarea = null
+          else
+            nuevoFechaInicioTarea = "\'" + formateaFechaHoraEscribeMySql(`${task[0].fecha_inicio_real_tarea}`, 'U') + "\'";
+
+          console.log (nuevoFechaInicioTarea);
+
           await axiosInstance.put("http://localhost:3001/updatetarea", {
               id: `${task[0].id_tarea}`,
               id_responsable: 1, // Añadir la lógica para utilizar al usuario logeado
@@ -109,12 +118,13 @@ export const TaskDetailPage = () => {
               fecha_inicio_estimada: formateaFechaHoraEscribeMySql(`${ task[0].fecha_inicio_estimada_tarea }`, 'U'),
               fecha_fin_estimada: formateaFechaHoraEscribeMySql(`${ task[0].fecha_fin_estimada_tarea }`, 'U'),
               esfuerzo_estimado: `${task[0].esfuerzo_estimado_tarea}`,
-              fecha_inicio_real: `${task[0].fecha_inicio_real_tarea}`,
-              fecha_fin_real: `${task[0].fecha_fin_real_tarea}`,
+              // fecha_inicio_real: "\'" + formateaFechaHoraEscribeMySql(`${task[0].fecha_inicio_real_tarea}`, 'U') + "\'",
+              fecha_inicio_real: nuevoFechaInicioTarea,
+              fecha_fin_real: null, //`${task[0].fecha_fin_real_tarea}`,
               esfuerzo_real: `${task[0].esfuerzo_real_tarea}`,
               proyecto_egipto: `${task[0].proyecto_egipto_tarea}`,
               modulo_egipto: `${task[0].modulo_egipto_tarea}`,
-              fecha_modificacion: formateaFechaHoraEscribeMySql ( ObtenerFechaHoraActual (), 'I' )               
+              fecha_modificacion: formateaFechaHoraEscribeMySql ( ObtenerFechaHoraActual (), 'I' )              
           }).then(() => {
               
               console.log( 'Tarea Actualizada' );
@@ -159,7 +169,7 @@ export const TaskDetailPage = () => {
   />
 
     {
-      isLoadingDelivery
+      isLoadingDelivery || isLoadingTask
         ? <div>Cargando...</div>
         :
     
@@ -222,7 +232,7 @@ export const TaskDetailPage = () => {
 
       <div className='row' style={{ fontSize: '14px', padding: '10px' }}>
         <Col><b>Fec. Inicio Est.: </b>{formateaFechaHoraLeeMySql( task[0].fecha_inicio_estimada_tarea, 1 )}</Col>
-        <Col><b>Fec. Fin Est.: </b>{formateaFechaHoraLeeMySql( task[0].fecha_fin_estimada_tarea )}</Col>
+        <Col><b>Fec. Fin Est.: </b>{formateaFechaHoraLeeMySql( task[0].fecha_fin_estimada_tarea, 1 )}</Col>
         <Col><b>Estimación Inicial: </b> {task[0].esfuerzo_estimado_tarea}</Col>
       </div>
 
@@ -310,7 +320,7 @@ export const TaskDetailPage = () => {
   </div>
   }
   {
-      isLoadingDelivery
+      isLoadingTask
         ? <div></div>
         :
   <IconButton

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useFetch } from "../../hooks";
 import { CabeceraFiltro } from "../components/CabeceraFiltro";
 import { AccordionSample } from "../components/AccordionSample";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../store/auth";
 
   
 export const AllTaskPage = () => {
@@ -16,6 +18,11 @@ export const AllTaskPage = () => {
     const [responsable, setResponsable] = useState(-1);
     const [proyecto, setProyecto] = useState(-1);
     const [dataFilter, setDataFilter] = useState([]);
+    const [userInfo, setUserInfo] = useState([]);
+
+    const dispatch = useDispatch();
+
+    const { uid } = useSelector( state => state.auth );
     
     var solicitanteCode = 0;
     var responsableCode = 0;
@@ -42,6 +49,29 @@ export const AllTaskPage = () => {
         }})
     };
 
+    useEffect(() => {
+    
+        if (!isLoading_usuario)
+        {
+            setUserInfo ((data_usuario.filter((item) => item.identificador_externo === uid )).map( item => {return { uid: item.identificador_externo
+                , id: item.id
+                , email: item.email
+                , displayName: item.nombre_completo
+                , photoURL: item.photoURL
+                , status: 'authenticated'
+            } } ))
+        }
+    
+    }, [data_usuario])
+
+    useEffect(() => {
+      
+        if (userInfo.length > 0)
+            dispatch( login (userInfo[0]));
+
+    }, [userInfo])
+    
+    
     useEffect(() => {
 
         resetCalcValues ();
@@ -78,12 +108,14 @@ export const AllTaskPage = () => {
         if(!isLoading_task)
         {
             setDataFilter(data_task);
+            console.log ( uid );
         }
     
     }, [isLoading_task])
 
     return (
     <>
+        <h5 className = 'cabecera-tittle'> Tareas por estado </h5>
         <div className="row filter">
         {
             isLoading_usuario 

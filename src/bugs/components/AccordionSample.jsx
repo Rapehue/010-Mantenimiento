@@ -5,9 +5,8 @@ import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
-import { MiniDeliveryCard } from '../components/MiniDeliveryCard';
-import { useEffect, useState } from 'react';
-import { useFetch } from '../../hooks';
+import { MiniObjectCard } from './MiniObjectCard';
+import { useState } from 'react';
 
 const Accordion = styled((props) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -66,7 +65,7 @@ export const AccordionSample = ( props ) => {
         <div className="row row-cols-1 row-cols-md-3 g-2">
           {
               props.data.map( item => (
-                  <MiniDeliveryCard 
+                  <MiniObjectCard 
                       key={ item.id }
                       { ...item }
                   />
