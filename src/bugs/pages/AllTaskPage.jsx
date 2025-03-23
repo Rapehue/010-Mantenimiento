@@ -8,12 +8,15 @@ import { login } from "../../store/auth";
   
 export const AllTaskPage = () => {
 
-    const { data: data_usuario, hasError: hasError_usuario, isLoading: isLoading_usuario } = useFetch( `http://localhost:3001/obtenerusuarios` );
-
-    const { data: data_project, hasError: hasError_project, isLoading: isLoading_project } = useFetch( `http://localhost:3001/obtenerproyectos` );
-
-    const { data: data_task, hasError: hasError_task, isLoading: isLoading_task } = useFetch( `http://localhost:3001/obtenertareahisact` );
-
+    // const { data: data_usuario, hasError: hasError_usuario, isLoading: isLoading_usuario } = useFetch( `http://localhost:3001/obtenerusuarios` );
+    const { data: data_usuario, hasError: hasError_usuario, isLoading: isLoading_usuario } = useFetch( `https://mantenimiento-digc4.kinsta.page/obtenerusuarios` );
+    
+    // const { data: data_project, hasError: hasError_project, isLoading: isLoading_project } = useFetch( `http://localhost:3001/obtenerproyectos` );
+    const { data: data_project, hasError: hasError_project, isLoading: isLoading_project } = useFetch( `https://mantenimiento-digc4.kinsta.page/obtenerproyectos` );
+    
+    // const { data: data_task, hasError: hasError_task, isLoading: isLoading_task } = useFetch( `http://localhost:3001/obtenertareahisact` );
+    const { data: data_task, hasError: hasError_task, isLoading: isLoading_task } = useFetch( `https://mantenimiento-digc4.kinsta.page/obtenertareahisact` );
+    
     const [solicitante, setSolicitante] = useState(-1);
     const [responsable, setResponsable] = useState(-1);
     const [proyecto, setProyecto] = useState(-1);
