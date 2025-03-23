@@ -9,7 +9,7 @@ app.use(express.json());
 const db = mysql.createConnection({
     host: 'mysql-23226ec5-rapehue82-b029.e.aivencloud.com',
     user: 'avnadmin',
-    password: 'xxxxxx',
+    password: 'AVNS_EbA40vwUyAQ2uCwb15u',
     database: 'defaultdb',
     port:28229
 });
