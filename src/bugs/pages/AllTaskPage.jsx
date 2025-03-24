@@ -4,18 +4,23 @@ import { CabeceraFiltro } from "../components/CabeceraFiltro";
 import { AccordionSample } from "../components/AccordionSample";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/auth";
+import { IconButton } from '@mui/material';
+import { AddOutlined } from "@mui/icons-material";
+import { useNavigate } from 'react-router-dom';
 
   
 export const AllTaskPage = () => {
 
-    // const { data: data_usuario, hasError: hasError_usuario, isLoading: isLoading_usuario } = useFetch( `http://localhost:3001/obtenerusuarios` );
-    const { data: data_usuario, hasError: hasError_usuario, isLoading: isLoading_usuario } = useFetch( `https://mantenimiento-digc4.kinsta.page/obtenerusuarios` );
+    const navigate = useNavigate();
+
+    const { data: data_usuario, hasError: hasError_usuario, isLoading: isLoading_usuario } = useFetch( `http://localhost:3001/obtenerusuarios` );
+    // const { data: data_usuario, hasError: hasError_usuario, isLoading: isLoading_usuario } = useFetch( `https://mantenimiento-digc4.kinsta.page/obtenerusuarios` );
     
-    // const { data: data_project, hasError: hasError_project, isLoading: isLoading_project } = useFetch( `http://localhost:3001/obtenerproyectos` );
-    const { data: data_project, hasError: hasError_project, isLoading: isLoading_project } = useFetch( `https://mantenimiento-digc4.kinsta.page/obtenerproyectos` );
+    const { data: data_project, hasError: hasError_project, isLoading: isLoading_project } = useFetch( `http://localhost:3001/obtenerproyectos` );
+    // const { data: data_project, hasError: hasError_project, isLoading: isLoading_project } = useFetch( `https://mantenimiento-digc4.kinsta.page/obtenerproyectos` );
     
-    // const { data: data_task, hasError: hasError_task, isLoading: isLoading_task } = useFetch( `http://localhost:3001/obtenertareahisact` );
-    const { data: data_task, hasError: hasError_task, isLoading: isLoading_task } = useFetch( `https://mantenimiento-digc4.kinsta.page/obtenertareahisact` );
+    const { data: data_task, hasError: hasError_task, isLoading: isLoading_task } = useFetch( `http://localhost:3001/obtenertareahisact` );
+    // const { data: data_task, hasError: hasError_task, isLoading: isLoading_task } = useFetch( `https://mantenimiento-digc4.kinsta.page/obtenertareahisact` );
     
     const [solicitante, setSolicitante] = useState(-1);
     const [responsable, setResponsable] = useState(-1);
@@ -160,6 +165,19 @@ export const AllTaskPage = () => {
                 <AccordionSample backColor = {'OrangeRed'} title = {'Reabierto'} id={7} data = {remapValues((dataFilter.filter((item) => item.descripcion_estado === 'Reabierto')))}/>
                 </>
         }
+        <IconButton
+          onClick={() => navigate(`task/create_task`)}
+          size='large'
+          sx={{
+            color: 'white',
+            backgroundColor: 'error.main',
+            ':hover': { backgroundColor: 'error.main', opacity: 0.9 },
+            position: 'fixed',
+            right: 50,
+            bottom: 50
+          }}>
+            <AddOutlined sx={{ fontSize: 30 }}/>
+        </IconButton>
     </>
   )
 }
